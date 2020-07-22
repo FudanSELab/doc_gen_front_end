@@ -69,7 +69,7 @@
               <el-divider></el-divider>
             </div>
             <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Return Value</h4>
-            <div style="margin: 0px auto;padding: 3px;">
+            <div style="margin: 0px auto;padding: 4px;">
               <el-table
                 :data="item['return_value']"
                 border
@@ -95,7 +95,7 @@
               <el-divider></el-divider>
             </div>
             <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Parameters</h4>
-            <div style="margin: 0px auto;padding: 3px;">
+            <div style="margin: 0px auto;padding: 4px;">
               <el-table
                 :data="item['parameters']"
                 border
