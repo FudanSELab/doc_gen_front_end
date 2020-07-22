@@ -11,7 +11,7 @@
       <div ref="loading" v-show="isLoading" style="text-align: center;font-size: 26px;">loading……</div>
     </div>
     <div style="width: 92%;margin: 0px auto;" v-show="!isLoading">
-      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="width: 80%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 80%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
           border
           :data="extend_and_implements_info"
@@ -31,7 +31,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div id="fields" v-show="fields_info.length > 0" style="width: 92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+      <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
           :data="fields_info"
           border
@@ -60,7 +60,7 @@
       <div id="methods" v-show="methods_info.length > 0" style="padding: 20px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <div v-for="(item, index) in methods_info" v-bind:key="index" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
           <h3 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['name']}}</h3>
-          <div style="width: 91%;margin: 0px auto;">
+          <div style="width: 91%;margin: 0px auto;" v-show="item['comment'] != ''">
             <el-divider></el-divider>
           </div>
           <h4 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['comment']}}</h4>
@@ -69,48 +69,52 @@
               <el-divider></el-divider>
             </div>
             <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Return Value</h4>
-            <el-table
-              :data="item['return_value']"
-              border
-              style="width: 92%;margin: 3px auto;">
-              <el-table-column
-                prop="type"
-                label="type"
-                header-align="center"
-                align="center"
-                width="132">
-              </el-table-column>
-              <el-table-column
-                header-align="center"
-                align="center"
-                prop="qualified_name"
-                label="qualified name">
-              </el-table-column>
-            </el-table>
+            <div style="margin: 0px auto;padding: 2px;">
+              <el-table
+                :data="item['return_value']"
+                border
+                style="width: 92%;margin: 3px auto;">
+                <el-table-column
+                  prop="type"
+                  label="type"
+                  header-align="center"
+                  align="center"
+                  width="132">
+                </el-table-column>
+                <el-table-column
+                  header-align="center"
+                  align="center"
+                  prop="qualified_name"
+                  label="qualified name">
+                </el-table-column>
+              </el-table>
+            </div>
           </div>
           <div style="margin: 0px auto;" v-show="item['parameters'].length > 0">
             <div style="width: 91%;margin: 0px auto;">
               <el-divider></el-divider>
             </div>
             <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Parameters</h4>
-            <el-table
-              :data="item['parameters']"
-              border
-              style="width: 92%;margin: 3px auto;">
-              <el-table-column
-                header-align="center"
-                align="center"
-                prop="type"
-                label="type"
-                width="132">
-              </el-table-column>
-              <el-table-column
-                header-align="center"
-                align="center"
-                prop="qualified_name"
-                label="qualified name">
-              </el-table-column>
-            </el-table>
+            <div style="margin: 0px auto;padding: 2px;">
+              <el-table
+                :data="item['parameters']"
+                border
+                style="width: 92%;margin: 3px auto;">
+                <el-table-column
+                  header-align="center"
+                  align="center"
+                  prop="type"
+                  label="type"
+                  width="132">
+                </el-table-column>
+                <el-table-column
+                  header-align="center"
+                  align="center"
+                  prop="qualified_name"
+                  label="qualified name">
+                </el-table-column>
+              </el-table>
+            </div>
           </div>
         </div>
       </div>
