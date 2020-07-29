@@ -5,7 +5,7 @@
         {{title}}
       </router-link>
     </h1>
-    <a href="http://bigcode.fudan.edu.cn/kg/index.html#/" style="text-decoration:none;">
+    <a href="http://106.14.239.166:8080/DocGen/index.html#/" style="text-decoration:none;">
       <el-button id="recently_apis" icon="el-icon-s-home" type="primary" style="position: absolute;left: 11px;top: 16px;z-index: 10000;padding: 12px;" plain>Back to Home</el-button>
     </a>
     <el-button type="primary" style="position: fixed;right: 11px;top: 16px;z-index: 10000;" plain @click="display_labels" v-show="!drawer">Labels</el-button>

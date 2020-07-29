@@ -29,7 +29,9 @@
 
         </el-table>
             <h2>Characteristic</h2>
+            <div v-show="characteristic.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,there is no relevant content..."}}</h4></div>
             <el-table
+                    v-show="characteristic.length > 0"
                     :data="characteristic"
                     stripe
                     style="width: 80%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;"
