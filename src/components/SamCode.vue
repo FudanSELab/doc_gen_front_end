@@ -3,7 +3,7 @@
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
         </div>
-    <h1 >Sample Code</h1>
+    <h1 @click="display_loading">Sample Code</h1>
     <br>
     <el-table
             :data="samplecode"

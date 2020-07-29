@@ -81,7 +81,7 @@
             <div style="width: 91%;margin: 0px auto;" v-show="item['comment'] != ''">
               <el-divider></el-divider>
             </div>
-            <h4 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['comment']}}</h4>
+            <h4 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['comment']|msgFormat|msg|m}}</h4>
             <div style="margin: 0px auto;" v-show="item['return_value'].length > 0">
               <div style="width: 91%;margin: 0px auto;">
                 <el-divider></el-divider>
@@ -130,6 +130,9 @@
                           align="center"
                           prop="qualified_name"
                           label="qualified name">
+                    <template slot-scope="scope">
+                    {{scope.row.qualified_name|R}}
+                  </template>
                   </el-table-column>
                 </el-table>
               </div>
@@ -141,6 +144,7 @@
         <el-tab-pane label="SampleCode"><SamCode :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
         <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>
+
 
       </el-tabs>
     </div>
@@ -154,9 +158,11 @@
   import Characteristic from "./Characteristic";
   import RelatedTerms from "./RelatedTerms";
   import SamCode from "./SamCode";
+  import Others from "./Others";
+
   export default {
     name: 'DocGen',
-    components: {SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
+    components: {Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
     data () {
       return {
         query: '',
@@ -169,6 +175,18 @@
         displayLabelMean: "Please select your question cateqory",
         label: "Class Search"
       }
+    },
+    filters: {
+      "msg":function (value) {
+        return value.replace(/<s>/g," ");
+      },
+      "m":function (value) {
+        return value.replace(/<\/s>/g," ");
+      },
+      "R":function (value) {
+        return value.replace(/<R>/g," ");
+      }
+
     },
     methods: {
       example() {

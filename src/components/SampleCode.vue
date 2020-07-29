@@ -1,9 +1,9 @@
 <template>
     <div>
-        <a href="http://localhost:8080/#/" style="text-decoration:none;">
+        <a href="http://106.14.239.166:8080/DocGen/index.html#/" style="text-decoration:none;">
             <el-button id="recently_apis" icon="el-icon-s-home" type="primary" style="position: absolute;left: 11px;top: 16px;z-index: 1000;padding: 12px;" plain>Back to Home</el-button>
         </a>
-        <h1>Sample Code</h1>
+        <h1 @click="display_loading">Sample Code</h1>
         <br>
         <el-table
                 :data="samplecode"
@@ -21,6 +21,8 @@
         <div>
             <h1>Related Terms</h1>
             <br>
+            <div v-show="related == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><p>{{"sorry,there is no relevant content..."}}</p></div>
+            <div v-show="related >0">
             <el-table
                     :data="related"
                     border
@@ -43,7 +45,7 @@
                 </el-table-column>
             </el-table>
         </div>
-
+        </div>
     </div>
 
 </template>
@@ -57,8 +59,8 @@
         data() {
             return {
                 samplecode: [],
-                query:''
-
+                query:'',
+                related:[],
             }
         },
 

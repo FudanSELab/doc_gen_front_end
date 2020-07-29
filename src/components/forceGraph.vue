@@ -1,5 +1,5 @@
 <template>
-    <div id='graph_canvas' class="x" v-loading="loading">
+    <div @click="chuf" id='graph_canvas' class="x" v-loading="loading">
       <canvas ref="canvas"></canvas>
     </div>
 </template>
@@ -128,6 +128,17 @@ export default {
       this.restart()
       this.loading = false
     },
+      chuf () {
+          // this.getNodeData(this.id)
+          console.log(this.graphData)
+          console.log(this.responseData)
+          if (this.graphData != '0') {
+              this.getNodeRelation(this.graphData)
+          } else {
+              this.getNodeRelationWithId(this.responseData)
+          }
+          // this.force_graph_init()
+      },
     // create canvas
     render () {
       if (document.querySelector('canvas') !== null) {
@@ -199,17 +210,7 @@ export default {
       this.run()
     }
   },
-  mounted () {
-    // this.getNodeData(this.id)
-    console.log(this.graphData)
-    console.log(this.responseData)
-    if (this.graphData != '0') {
-        this.getNodeRelation(this.graphData)
-    } else {
-        this.getNodeRelationWithId(this.responseData)
-    }
-    // this.force_graph_init()
-  },
+
   // watch: {
   //   graphData: function (val) {
   //     console.log(val)

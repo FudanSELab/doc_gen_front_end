@@ -2,12 +2,15 @@
     <div>
         <div>
         <Others></Others>
-        <br></div>
+        </div>
+
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
         </div>
         <h2 >Related Terms</h2>
         <br>
+        <div v-show="related == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><p>{{"sorry,there is no relevant content..."}}</p></div>
+        <div v-show="related>0">
         <el-table
                 :data="related"
                 border
@@ -29,6 +32,7 @@
             >
             </el-table-column>
         </el-table>
+        </div>
 
     </div>
 </template>
