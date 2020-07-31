@@ -77,7 +77,7 @@
           <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
           </div>
           <div v-show="methods_info.length > 0" v-for="(item, index) in methods_info" v-bind:key="index" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
-            <h3 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['name']}}</h3>
+            <h3 style="margin: 12px auto;word-break: break-word;width: 93%">{{item['name']}}</h3>
             <div style="width: 91%;margin: 0px auto;" v-show="item['comment'] != ''">
               <el-divider></el-divider>
             </div>
@@ -86,53 +86,32 @@
               <div style="width: 91%;margin: 0px auto;">
                 <el-divider></el-divider>
               </div>
-              <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Return Value</h4>
-              <div style="margin: 0px auto;padding: 3px;">
+              <h3 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method detail</h3>
+              <div style="margin: 0px auto;padding: 3px;" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
+                        stripe
                         border
-                        style="width: 92%;margin: 3px auto;">
+                        style="width: 93%;margin: 0px auto;" >
                   <el-table-column
-                          prop="type"
-                          label="type"
+                          prop="la"
+                          label="title"
                           header-align="center"
                           align="center"
                           width="132">
                   </el-table-column>
                   <el-table-column
-                          header-align="center"
-                          align="center"
-                          prop="qualified_name"
-                          label="qualified name">
-                  </el-table-column>
-                </el-table>
-              </div>
-            </div>
-            <div style="margin: 0px auto;" v-show="item['parameters'].length > 0">
-              <div style="width: 91%;margin: 0px auto;">
-                <el-divider></el-divider>
-              </div>
-              <h4 style="margin: 10px auto;word-break: break-word;width: 91%;">Parameters</h4>
-              <div style="margin: 0px auto;padding: 3px;">
-                <el-table
-                        :data="item['parameters']"
-                        border
-                        style="width: 92%;margin: 3px auto;">
-                  <el-table-column
-                          header-align="center"
-                          align="center"
                           prop="type"
-                          label="type"
-                          width="132">
+                          label="name and type"
+                          header-align="center"
+                          align="center"
+                          width="300">
                   </el-table-column>
                   <el-table-column
                           header-align="center"
                           align="center"
                           prop="qualified_name"
-                          label="qualified name">
-                    <template slot-scope="scope">
-                    {{scope.row.qualified_name|R}}
-                  </template>
+                          label="description">
                   </el-table-column>
                 </el-table>
               </div>
@@ -143,9 +122,8 @@
         <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
         <el-tab-pane label="SampleCode"><SamCode :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
+        <el-tab-pane label="How To Use"><UseClass :use="query"></UseClass></el-tab-pane>
         <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>
-
-
       </el-tabs>
     </div>
   </div>
@@ -159,10 +137,11 @@
   import RelatedTerms from "./RelatedTerms";
   import SamCode from "./SamCode";
   import Others from "./Others";
+  import UseClass from "./UseClass";
 
   export default {
     name: 'DocGen',
-    components: {Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
+    components: {UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
     data () {
       return {
         query: '',
@@ -232,18 +211,20 @@
         }
         for (let i in responseData['methods']) {
           let singleMethod = {
-            name: responseData['methods'][i]['name'],
+            name: responseData['methods'][i]['declare'],
             comment: responseData['methods'][i]['doc_info']['comment'],
             return_value: [{
-              qualified_name: responseData['methods'][i]['return_value'][1]['properties']['qualified_name'],
-              type: responseData['methods'][i]['return_value'][1]['properties']['type']
+              qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
+              type: responseData['methods'][i]['return_value'][1]['properties']['simple_name']+responseData['methods'][i]['return_value'][1]['properties']['type'],
+              la: 'return_value'
             }],
             parameters: []
           }
           for (let j in responseData['methods'][i]['parameters']) {
-            singleMethod['parameters'].push({
-              qualified_name: responseData['methods'][i]['parameters'][j][1]['properties']['qualified_name'],
-              type: responseData['methods'][i]['parameters'][j][1]['properties']['type']
+            singleMethod['return_value'].push({
+              qualified_name: responseData['methods'][i]['parameters'][j][1]['properties']['description'],
+              type: responseData['methods'][i]['parameters'][j][1]['properties']['simple_name']+responseData['methods'][i]['parameters'][j][1]['properties']['type'],
+              la: 'parameters'
             })
           }
           this.methods_info.push(singleMethod)

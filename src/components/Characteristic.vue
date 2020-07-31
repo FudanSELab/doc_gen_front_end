@@ -35,7 +35,7 @@
                     :data="characteristic"
                     stripe
                     style="width: 80%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;"
-                    border="1"
+                    border
 
             >
                 <el-table-column
