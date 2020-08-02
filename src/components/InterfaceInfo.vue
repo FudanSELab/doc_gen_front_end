@@ -1,10 +1,9 @@
 <template>
     <div >
         <div style="text-align:right">
-            <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
+            <el-button icon="el-icon-refresh-left" id="clickMe" @click="display_loading"></el-button>
         </div>
          <h1 @click="display_loading">Interface Information</h1>
-
     <el-table
             :data="tableData"
             stripe
@@ -44,6 +43,19 @@
         },
 
         methods: {
+            myFunc: function() {
+                setTimeout(function() {
+                    // IE
+                    debugger
+                    if (document.all) {
+                        document.getElementById('clickMe').click()
+                    } else { // 其它浏览器
+                        var e = document.createEvent('MouseEvents')
+                        e.initEvent('click', true, true)
+                        document.getElementById('clickMe').dispatchEvent(e)
+                    }
+                }, 3000)
+            },
             display_loading (){
                 console.log('test')
                 console.log(this.getq.trim())

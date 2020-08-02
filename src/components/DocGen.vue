@@ -169,7 +169,7 @@
     },
     methods: {
       example() {
-        this.query = 'org.jabref.gui.entryeditor.FieldsEditorTab'
+        this.query = 'org.jabref.model.entry.BibEntry'
       },
       display_loading() {
         if (this.query.trim() === '') {
