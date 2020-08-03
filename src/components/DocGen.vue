@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="margin: 20px auto 25px;width: 80%;">
-      <h3 style="text-align: center;margin-bottom: 15px;font-size:30px" >DocGen</h3>
+      <h3 style="text-align: center;margin-bottom: 15px;font-size:30px" >Doc Generator</h3>
       <div id="search-box" style="margin: 50px 2.5% 30px;display: flex;">
         <el-tooltip class="item" effect="dark" :content="displayLabelMean" placement="top">
           <div>
@@ -32,7 +32,7 @@
                 style="width: 100%">
           <el-table-column
                   prop="relation"
-                  label="relation"
+                  label="Relation"
                   header-align="center"
                   align="center"
                   width="132">
@@ -41,7 +41,7 @@
                   prop="name"
                   header-align="center"
                   align="center"
-                  label="qualified name">
+                  label="Qualified Name">
           </el-table-column>
         </el-table>
       </div>
@@ -49,10 +49,10 @@
         <el-table
                 :data="fields_info"
                 border
-                style="width: 100%">
+                style="width: 100%;">
           <el-table-column
                   prop="type"
-                  label="type"
+                  label="Type"
                   header-align="center"
                   align="center"
                   width="132">
@@ -61,13 +61,13 @@
                   prop="qualified_name"
                   header-align="center"
                   align="center"
-                  label="qualified name">
+                  label="Field Name">
           </el-table-column>
           <el-table-column
-                  prop="full_declaration"
+                  prop="description"
                   header-align="center"
                   align="center"
-                  label="full declaration">
+                  label="Description">
           </el-table-column>
         </el-table>
       </div>
@@ -112,7 +112,7 @@
                           align="center"
                           prop="qualified_name"
                           label="description">
-                  </el-table-column>
+                  </el-table-column>                   
                 </el-table>
               </div>
             </div>
@@ -200,7 +200,7 @@
           this.fields_info.push({
             type: responseData['fields'][i][1]['properties']['type'],
             qualified_name: responseData['fields'][i][1]['properties']['qualified_name'],
-            full_declaration: responseData['fields'][i][1]['properties']['full_declaration']
+            description: responseData['fields'][i][1]['properties']['full_description'].replace(/[*/]/g, '')
           })
         }
         for (let i in responseData['implements']) {
@@ -284,5 +284,8 @@
 </script>
 
 <style scoped>
+  .el-table .cell{
+    word-break: normal;
+  }
 
 </style>
