@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="margin: 20px auto 25px;width: 80%;">
-      <h3 style="text-align: center;margin-bottom: 15px;font-size:30px" >DocGen</h3>
+      <h3 style="text-align: center;margin-bottom: 15px;font-size:30px" >Doc Generator</h3>
       <div id="search-box" style="margin: 50px 2.5% 30px;display: flex;">
         <el-tooltip class="item" effect="dark" :content="displayLabelMean" placement="top">
           <div>
@@ -29,10 +29,10 @@
         <el-table
                 border
                 :data="extend_and_implements_info"
-                style="width: 100%">
+                style="width: 100%;white-space: pre-line;">
           <el-table-column
                   prop="relation"
-                  label="relation"
+                  label="Relation"
                   header-align="center"
                   align="center"
                   width="132">
@@ -41,7 +41,7 @@
                   prop="name"
                   header-align="center"
                   align="center"
-                  label="qualified name">
+                  label="Qualified Name">
           </el-table-column>
         </el-table>
       </div>
@@ -49,10 +49,10 @@
         <el-table
                 :data="fields_info"
                 border
-                style="width: 100%">
+                style="width: 100%;">
           <el-table-column
                   prop="type"
-                  label="type"
+                  label="Type"
                   header-align="center"
                   align="center"
                   width="132">
@@ -61,13 +61,15 @@
                   prop="qualified_name"
                   header-align="center"
                   align="center"
-                  label="qualified name">
+                  label="Field Name"
+                  width="320">
           </el-table-column>
           <el-table-column
-                  prop="full_declaration"
+                  prop="description"
                   header-align="center"
-                  align="center"
-                  label="full declaration">
+                  align="left"
+                  label="Description"
+                 >
           </el-table-column>
         </el-table>
       </div>
@@ -76,18 +78,39 @@
           <span slot="label">Basic Information</span>
           <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
           </div>
-          <div v-show="methods_info.length > 0" v-for="(item, index) in methods_info" v-bind:key="index" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
-            <h3 style="margin: 12px auto;word-break: break-word;width: 93%">{{item['name']}}</h3>
-            <div style="width: 91%;margin: 0px auto;" v-show="item['comment'] != ''">
-              <el-divider></el-divider>
-            </div>
-            <h4 style="margin: 12px auto;word-break: break-word;width: 93%;">{{item['comment']|msgFormat|msg|m}}</h4>
-            <div style="margin: 0px auto;" v-show="item['return_value'].length > 0">
-              <div style="width: 91%;margin: 0px auto;">
-                <el-divider></el-divider>
-              </div>
-              <h3 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method detail</h3>
-              <div style="margin: 0px auto;padding: 3px;" v-show="item['return_value'].length > 0">
+          <div v-show="methods_info.length > 0"  style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
+           <h2>All Methods</h2>
+            <el-table
+                    :data="methods_info"
+                    stripe
+                    style="width: 95%;margin: auto"
+            >
+              <el-table-column
+                      prop="returntype"
+                      label="Type"
+                      header-align="left"
+                      align="left"
+                      width="360"
+              >
+              </el-table-column>
+
+              <el-table-column
+                      prop="name"
+                      label="Method and Description"
+                      header-align="left"
+                      align="left"
+              >
+                <template slot-scope="scope">
+                  <div v-html="scope.row.name"></div>
+                </template>
+              </el-table-column>
+            </el-table></div>
+          <div v-show="methods_info.length > 0"  style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
+            <h2 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method Detail</h2>
+            <div style="margin: 0px auto;" v-for="(item, index) in methods_info" v-bind:key="index" v-show="item['return_value'].length > 0">
+              <div style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
+              <p class="1" align="left" style="margin-left: 45px">{{item['mname']}}</p>
+              <div style="margin: 0px auto;padding: 3px;margin-bottom: 30px" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
                         stripe
@@ -95,26 +118,35 @@
                         style="width: 93%;margin: 0px auto;" >
                   <el-table-column
                           prop="la"
-                          label="title"
+                          label="Title"
                           header-align="center"
                           align="center"
                           width="132">
                   </el-table-column>
+
                   <el-table-column
                           prop="type"
-                          label="name and type"
+                          label="Type"
                           header-align="center"
                           align="center"
-                          width="300">
+                          width="160">
+                  </el-table-column>
+                  <el-table-column
+                          prop="name"
+                          label="Name"
+                          header-align="center"
+                          align="center"
+                          width="160">
                   </el-table-column>
                   <el-table-column
                           header-align="center"
                           align="center"
                           prop="qualified_name"
-                          label="description">
+                          label="Description">
                   </el-table-column>
                 </el-table>
               </div>
+            </div>
             </div>
           </div>
         </el-tab-pane>
@@ -200,7 +232,7 @@
           this.fields_info.push({
             type: responseData['fields'][i][1]['properties']['type'],
             qualified_name: responseData['fields'][i][1]['properties']['qualified_name'],
-            full_declaration: responseData['fields'][i][1]['properties']['full_declaration']
+            description: responseData['fields'][i][1]['properties']['full_description'].replace(/[*/]/g, '')
           })
         }
         for (let i in responseData['implements']) {
@@ -210,20 +242,24 @@
           })
         }
         for (let i in responseData['methods']) {
+
           let singleMethod = {
-            name: responseData['methods'][i]['declare'],
-            comment: responseData['methods'][i]['doc_info']['comment'],
+            name: responseData['methods'][i]['declare']+'<br/>'+responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            mname:responseData['methods'][i]['declare'],
+            returntype: responseData['methods'][i]['return_value'][1]['properties']['type'],
             return_value: [{
               qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
-              type: responseData['methods'][i]['return_value'][1]['properties']['simple_name']+responseData['methods'][i]['return_value'][1]['properties']['type'],
-              la: 'return_value'
+              type: responseData['methods'][i]['return_value'][1]['properties']['type'],
+              name:'-',
+              la: 'return value'
             }],
             parameters: []
           }
           for (let j in responseData['methods'][i]['parameters']) {
             singleMethod['return_value'].push({
               qualified_name: responseData['methods'][i]['parameters'][j][1]['properties']['description'],
-              type: responseData['methods'][i]['parameters'][j][1]['properties']['simple_name']+responseData['methods'][i]['parameters'][j][1]['properties']['type'],
+              type: responseData['methods'][i]['parameters'][j][1]['properties']['type'],
+              name:responseData['methods'][i]['parameters'][j][1]['properties']['simple_name'],
               la: 'parameters'
             })
           }

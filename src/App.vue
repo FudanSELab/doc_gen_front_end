@@ -26,6 +26,7 @@ html,body,#app{
   position: absolute;
   /*background-color: rgba(245,245,245,0.8);*/
   word-wrap:break-word;
+  white-space: pre-line;
 }
 .CodeMirror{
   font-family: Menlo,Monaco,Consolas,Courier New,monospace !important;

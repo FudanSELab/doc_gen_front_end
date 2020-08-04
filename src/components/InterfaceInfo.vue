@@ -75,7 +75,6 @@
             },
             dealt_response_data (responseData) {
                 this.tableData= []
-
                 this.tableData.push({
                     full_html_description: responseData['full_html_description'],
                     full_description: responseData['full_description'],
@@ -95,4 +94,5 @@
         font-size: 20px
     ;
     }
+
 </style>
