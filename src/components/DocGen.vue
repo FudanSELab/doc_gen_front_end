@@ -87,7 +87,7 @@
             >
               <el-table-column
                       prop="returntype"
-                      label="Type"
+                      label="Return Type"
                       header-align="left"
                       align="left"
                       width="360"
@@ -154,7 +154,7 @@
         <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
         <el-tab-pane label="SampleCode"><SamCode :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
-        <el-tab-pane label="How To Use"><UseClass :use="query"></UseClass></el-tab-pane>
+        <el-tab-pane label="How to Use"><UseClass :use="query"></UseClass></el-tab-pane>
         <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>
       </el-tabs>
     </div>
@@ -229,9 +229,11 @@
         this.methods_info = []
         this.extend_and_implements_info.push(responseData['extends'])
         for (let i in responseData['fields']) {
+          let qname = responseData['fields'][i][1]['properties']['qualified_name']
+          qname = qname.substring(qname.lastIndexOf('.')+1)
           this.fields_info.push({
             type: responseData['fields'][i][1]['properties']['type'],
-            qualified_name: responseData['fields'][i][1]['properties']['qualified_name'],
+            qualified_name: qname,
             description: responseData['fields'][i][1]['properties']['full_description'].replace(/[*/]/g, '')
           })
         }
@@ -242,11 +244,36 @@
           })
         }
         for (let i in responseData['methods']) {
-
+          // 对All Methods这一栏的Return Type进行截取只留最后一部分
+          let full_return_type = responseData['methods'][i]['return_value'][1]['properties']['type']
+          let simple_return_type = full_return_type
+          if (full_return_type.lastIndexOf('.') != -1) {
+              simple_return_type = full_return_type.substring(full_return_type.lastIndexOf('.')+1)
+          }
+          // 对All Methods这一栏的method name进行处理, 重新构造
+          let method_name = responseData['methods'][i]['declare']
+          let method_name_prefix = method_name.substring(0, method_name.indexOf('('))
+          let para_str = ""
+          for (var index = 0; index < responseData['methods'][i]['parameters'].length; index++) {
+            let return_type = responseData['methods'][i]['parameters'][index][1]['properties']['type']
+            let simple_return_type = return_type
+            if (simple_return_type.lastIndexOf('.')!=-1) {
+              simple_return_type = return_type.substring(return_type.lastIndexOf('.')+1)
+            }
+            if (simple_return_type.indexOf(" ")!=-1) {
+              simple_return_type = return_type.substring(0, return_type.indexOf(" "))
+            }
+            if (index == responseData['methods'][i]['parameters'].length-1) {
+              para_str = para_str + simple_return_type + " " + responseData['methods'][i]['parameters'][index][1]['properties']['simple_name']
+            }else {
+              para_str = para_str + simple_return_type + " " + responseData['methods'][i]['parameters'][index][1]['properties']['simple_name'] + ", "
+            }
+          }
+          let final_method_name = method_name_prefix + " (" + para_str + ")"
           let singleMethod = {
-            name: responseData['methods'][i]['declare']+'<br/>'+responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            name: final_method_name + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:responseData['methods'][i]['declare'],
-            returntype: responseData['methods'][i]['return_value'][1]['properties']['type'],
+            returntype: simple_return_type,
             return_value: [{
               qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
               type: responseData['methods'][i]['return_value'][1]['properties']['type'],
@@ -256,6 +283,11 @@
             parameters: []
           }
           for (let j in responseData['methods'][i]['parameters']) {
+            // let full_return_type = responseData['methods'][i]['parameters'][j][1]['properties']['type']
+            // let simple_return_type = full_return_type
+            // if (full_return_type.lastIndexOf('.') != -1) {
+            //     simple_return_type = full_return_type.substring(full_return_type.lastIndexOf('.')+1)
+            // }
             singleMethod['return_value'].push({
               qualified_name: responseData['methods'][i]['parameters'][j][1]['properties']['description'],
               type: responseData['methods'][i]['parameters'][j][1]['properties']['type'],
