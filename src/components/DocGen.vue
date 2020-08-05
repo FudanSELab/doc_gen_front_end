@@ -24,12 +24,36 @@
     <div>
       <div ref="loading" v-show="isLoading" style="text-align: center;font-size: 26px;">loading……</div>
     </div>
-    <div style="width: 92%;margin: 0px auto;" v-show="!isLoading">
-      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 80%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+    <div style="width: 92%;margin: 0px auto" v-show="!isLoading">
+      <div v-show="tableData.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+        <h3 >Class Description</h3>
+        <el-table
+                :data="tableData"
+                stripe
+
+                style="width: 100%">
+          <el-table-column
+                  prop="full_html_description"
+                  label="full_html_description"
+                  width="420">
+          </el-table-column>
+          <el-table-column
+                  prop="full_description"
+                  label="full_description"
+                  width="420">
+          </el-table-column>
+          <el-table-column
+                  prop="sentence_description"
+                  label="sentence_description">
+          </el-table-column>
+        </el-table>
+
+      </div>
+      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
                 border
                 :data="extend_and_implements_info"
-                style="width: 100%;white-space: pre-line;">
+                style="width: 100%;">
           <el-table-column
                   prop="relation"
                   label="Relation"
@@ -45,7 +69,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+      <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
                 :data="fields_info"
                 border
@@ -75,7 +99,7 @@
       </div>
       <el-tabs  id="methods" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card">
         <el-tab-pane>
-          <span slot="label">Basic Information</span>
+          <span slot="label">Methods</span>
           <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
           </div>
           <div v-show="methods_info.length > 0"  style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
@@ -109,7 +133,7 @@
             <h2 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method Detail</h2>
             <div style="margin: 0px auto;" v-for="(item, index) in methods_info" v-bind:key="index" v-show="item['return_value'].length > 0">
               <div style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
-              <p class="1" align="left" style="margin-left: 45px">{{item['mname']}}</p>
+                <p class="1" v-html="item['name']" align="left" style="margin-left: 45px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
               <div style="margin: 0px auto;padding: 3px;margin-bottom: 30px" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
@@ -150,7 +174,6 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Class Description"><InterfaceInfo :getq="query"></InterfaceInfo></el-tab-pane>
         <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
         <el-tab-pane label="Sample Code"><SamCode :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
@@ -164,7 +187,7 @@
 <script>
   import axios from 'axios'
   import KeyMethods from "./KeyMethods";
-  import InterfaceInfo from "./InterfaceInfo";
+  import InterfaceInfo from "./ClassInfo";
   import Characteristic from "./Characteristic";
   import RelatedTerms from "./RelatedTerms";
   import SamCode from "./SamCode";
@@ -181,6 +204,7 @@
         extend_and_implements_info: [],
         fields_info: [],
         methods_info: [],
+        tableData: [],
         select: '1',
         kai:false,
         displayLabelMean: "Please select your question cateqory",
@@ -220,8 +244,31 @@
                   .catch(error => {
                     console.log(error)
                     alert("Sorry! We can't find related responses.")
-                  })
+                  }),
+                  axios
+                          .post(
+                                  'http://106.14.239.166/contest/api/get_doc/',
+                                  {qualified_name: this.query.trim()})
+                          .then(response => {
+                            this.info_response_data(response.data)
+                            this.isLoading = false
+                            console.log(response.data);
+                          })
+                          .catch(error => {
+                            console.log(error)
+                            alert("Sorry! We can't find related responses.")
+                          })
         }
+      },
+      info_response_data (responseData) {
+        this.tableData= []
+        this.tableData.push({
+          full_html_description: responseData['full_html_description'],
+          full_description: responseData['full_description'],
+          sentence_description: responseData['sentence_description']
+        })
+
+        console.log(this.tableData)
       },
       dealt_response_data(responseData) {
         this.extend_and_implements_info = []
@@ -286,7 +333,7 @@
           }
           let singleMethod = {
             name: final_method_name + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
-            mname:final_method_name,
+            mname:final_method_name + '<br/>' +'<p>'+ responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'')+'</p>',
             returntype: simple_return_type,
             return_value: [{
               qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
