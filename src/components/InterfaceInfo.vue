@@ -3,7 +3,7 @@
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" id="clickMe" @click="display_loading"></el-button>
         </div>
-         <h1 @click="display_loading">Interface Information</h1>
+         <h1 @click="display_loading">Class Description</h1>
     <el-table
             :data="tableData"
             stripe
@@ -11,12 +11,12 @@
         <el-table-column
                 prop="full_html_description"
                 label="full_html_description"
-                width="360">
+                width="450">
         </el-table-column>
         <el-table-column
                 prop="full_description"
                 label="full_description"
-                width="360">
+                width="450">
         </el-table-column>
         <el-table-column
                 prop="sentence_description"
@@ -91,8 +91,7 @@
 
 <style scoped>
     h1{
-        font-size: 20px
-    ;
+        font-size: 20px;
     }
 
 </style>

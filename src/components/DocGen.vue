@@ -150,9 +150,9 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Interface Information"><InterfaceInfo :getq="query"></InterfaceInfo></el-tab-pane>
+        <el-tab-pane label="Class Description"><InterfaceInfo :getq="query"></InterfaceInfo></el-tab-pane>
         <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
-        <el-tab-pane label="SampleCode"><SamCode :gqu="query"></SamCode></el-tab-pane>
+        <el-tab-pane label="Sample Code"><SamCode :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
         <el-tab-pane label="How to Use"><UseClass :use="query"></UseClass></el-tab-pane>
         <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>

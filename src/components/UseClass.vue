@@ -49,7 +49,7 @@
             >
                 <el-table-column
                         prop="return_value"
-                        label="As return_value"
+                        label="As Return Value"
                         header-align="center"
                         align="center"
                 >

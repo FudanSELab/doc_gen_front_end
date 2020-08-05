@@ -12,7 +12,7 @@
                 >
             <el-table-column
                 prop="relation"
-                label="relation"
+                label="Relation"
                 header-align="center"
                 align="center"
 
@@ -20,7 +20,7 @@
         </el-table-column>
             <el-table-column
                     prop="name"
-                    label="name"
+                    label="Name"
                     header-align="center"
                     align="center"
 

@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div>
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
         </div>
@@ -9,7 +9,7 @@
                 style="width: 92%;margin: 3px auto;">
             <el-table-column
                     prop="keym"
-                    label="key_methods"
+                    label="Key Methods"
                     header-align="center"
                     align="center"
             >
