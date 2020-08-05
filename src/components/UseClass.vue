@@ -7,8 +7,8 @@
         <div class="forward container" style="max-width: 1200px;">
             <div class="side_bar">
                 <ul class="nav_sidebar">
-                    <li><a @click="changeHash('#As_parameter')">As parameter</a></li>
-                    <li><a @click="changeHash('#As_Return_value')">As Return_value</a></li>
+                    <li><a @click="changeHash('#As_parameter')">As Parameter</a></li>
+                    <li><a @click="changeHash('#As_Return_value')">As Return Value</a></li>
                     </ul>
             </div>
         </div>
