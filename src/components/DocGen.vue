@@ -29,8 +29,6 @@
         <h3 >Class Description</h3>
         <el-table
                 :data="tableData"
-                stripe
-
                 style="width: 100%">
           <el-table-column
                   prop="full_html_description"
@@ -116,6 +114,10 @@
                       align="left"
                       width="360"
               >
+                <template slot-scope="scope">
+                  <router-link style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
+                  </router-link>
+                </template>
               </el-table-column>
 
               <el-table-column
@@ -255,8 +257,9 @@
                             console.log(response.data);
                           })
                           .catch(error => {
+                            this.info_data(response.data)
                             console.log(error)
-                            alert("Sorry! We can't find related responses.")
+                            alert("Sorry! ")
                           })
         }
       },
@@ -267,8 +270,6 @@
           full_description: responseData['full_description'],
           sentence_description: responseData['sentence_description']
         })
-
-        console.log(this.tableData)
       },
       dealt_response_data(responseData) {
         this.extend_and_implements_info = []
@@ -335,6 +336,7 @@
             name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             returntype: simple_return_type,
+            retype:full_return_type,
             return_value: [{
               qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
               type: simple_type,
