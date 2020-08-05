@@ -35,12 +35,12 @@
           <el-table-column
                   prop="full_html_description"
                   label="full_html_description"
-                  width="420">
+                  width="390">
           </el-table-column>
           <el-table-column
                   prop="full_description"
                   label="full_description"
-                  width="420">
+                  width="390">
           </el-table-column>
           <el-table-column
                   prop="sentence_description"
@@ -133,7 +133,7 @@
             <h2 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method Detail</h2>
             <div style="margin: 0px auto;" v-for="(item, index) in methods_info" v-bind:key="index" v-show="item['return_value'].length > 0">
               <div style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
-                <p class="1" v-html="item['name']" align="left" style="margin-left: 45px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
+                <p class="1" v-html="item['mname']" align="left" style="font-size:15px;margin-left: 45px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
               <div style="margin: 0px auto;padding: 3px;margin-bottom: 30px" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
@@ -332,8 +332,8 @@
             simple_type = simple_type.substring(0, simple_type.indexOf(" "))
           }
           let singleMethod = {
-            name: final_method_name + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
-            mname:final_method_name + '<br/>' +'<p>'+ responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'')+'</p>',
+            name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             returntype: simple_return_type,
             return_value: [{
               qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
