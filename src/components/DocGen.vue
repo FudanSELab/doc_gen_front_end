@@ -25,29 +25,22 @@
       <div ref="loading" v-show="isLoading" style="text-align: center;font-size: 26px;">loading……</div>
     </div>
     <div style="width: 92%;margin: 0px auto" v-show="!isLoading">
-      <div v-show="tableData.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
-        <h3 >Class Description</h3>
+      <div v-show="tableData.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
                 :data="tableData"
                 style="width: 100%">
           <el-table-column
                   prop="full_html_description"
-                  label="full_html_description"
-                  width="390">
-          </el-table-column>
-          <el-table-column
-                  prop="full_description"
-                  label="full_description"
-                  width="390">
-          </el-table-column>
-          <el-table-column
-                  prop="sentence_description"
-                  label="sentence_description">
+                  label="Class Description"
+                  header-align="center"
+                  style="text-indent: 2em;"
+
+                  >
           </el-table-column>
         </el-table>
 
       </div>
-      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+      <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
                 border
                 :data="extend_and_implements_info"

@@ -3,29 +3,21 @@
         <a href="http://106.14.239.166:8080/DocGen/index.html#/" style="text-decoration:none;">
             <el-button id="recently_apis" icon="el-icon-s-home" type="primary" style="position: absolute;left: 11px;top: 16px;z-index: 10000;padding: 12px;" plain>Back to Home</el-button>
         </a>
-        <h1 style="margin-bottom: 30px">{{query}}</h1>
+        <h2 style="margin-bottom: 30px">{{query}}</h2>
         <div style="width: 92%;margin: 0px auto" v-show="!isLoading">
             <div v-show="tableData.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
-                <h3 >Class Description</h3>
                 <el-table
                         :data="tableData"
                         style="width: 100%">
                     <el-table-column
                             prop="full_html_description"
-                            label="full_html_description"
-                            width="390">
-                    </el-table-column>
-                    <el-table-column
-                            prop="full_description"
-                            label="full_description"
-                            width="390">
-                    </el-table-column>
-                    <el-table-column
-                            prop="sentence_description"
-                            label="sentence_description">
+                            label="Class Description"
+                            header-align="center"
+                            style="text-indent: 2em;"
+
+                    >
                     </el-table-column>
                 </el-table>
-
             </div>
             <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
                 <el-table
@@ -75,7 +67,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-tabs  id="methods" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card">
+            <el-tabs  id="methods" v-show="kai" style="padding: 0px 0px 0px;width: 92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card">
                 <el-tab-pane>
                     <span slot="label">Methods</span>
                     <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
@@ -95,7 +87,7 @@
                                     width="360"
                             >
                                 <template slot-scope="scope">
-                                    <router-link :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
+                                    <router-link style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
                                     </router-link>
                                 </template>
                             </el-table-column>
