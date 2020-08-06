@@ -98,7 +98,9 @@
                                     header-align="left"
                                     align="left"
                             >
-
+                                <template slot-scope="scope">
+                                    <div v-html="scope.row.name"></div>
+                                </template>
                             </el-table-column>
                         </el-table></div>
                     <div v-show="methods_info.length > 0"  style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">

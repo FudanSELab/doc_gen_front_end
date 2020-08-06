@@ -60,34 +60,7 @@
           </el-table-column>
         </el-table>
       </div>
-      <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
-        <el-table
-                :data="fields_info"
-                border
-                style="width: 100%;">
-          <el-table-column
-                  prop="type"
-                  label="Type"
-                  header-align="center"
-                  align="center"
-                  width="132">
-          </el-table-column>
-          <el-table-column
-                  prop="qualified_name"
-                  header-align="center"
-                  align="center"
-                  label="Field Name"
-                  width="320">
-          </el-table-column>
-          <el-table-column
-                  prop="description"
-                  header-align="center"
-                  align="left"
-                  label="Description"
-                 >
-          </el-table-column>
-        </el-table>
-      </div>
+
       <el-tabs  id="methods" v-model="activeName" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card"  @tab-click="call_son_component_method">
         <el-tab-pane name="Method">
           <span slot="label">Methods</span>
@@ -169,6 +142,8 @@
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane label="Field" name="Field"><Field ref="Field" :fquery="query"></Field></el-tab-pane>
+        <el-tab-pane label="Constructor" name="Constructor"><Constructor ref="Constructor" :getquery="query"></Constructor></el-tab-pane>
         <el-tab-pane label="Key Methods" name="KeyMethods"><KeyMethods ref="KeyMethods" :getquery="query"></KeyMethods></el-tab-pane>
         <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
@@ -188,10 +163,12 @@
   import SamCode from "./SamCode";
   import Others from "./Others";
   import UseClass from "./UseClass";
+  import Field from "./Field";
+  import Constructor from "./Constructor";
 
   export default {
     name: 'DocGen',
-    components: {UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
+    components: { Constructor,Field, UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
     data () {
       return {
         query: '',
