@@ -88,8 +88,8 @@
           </el-table-column>
         </el-table>
       </div>
-      <el-tabs  id="methods" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card">
-        <el-tab-pane>
+      <el-tabs  id="methods" v-model="activeName" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card"  @tab-click="call_son_component_method">
+        <el-tab-pane name="Method">
           <span slot="label">Methods</span>
           <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
           </div>
@@ -169,11 +169,11 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
-        <el-tab-pane label="Sample Code"><SamCode :gqu="query"></SamCode></el-tab-pane>
-        <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
-        <el-tab-pane label="How to Use"><UseClass :use="query"></UseClass></el-tab-pane>
-        <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>
+        <el-tab-pane label="Key Methods" name="KeyMethods"><KeyMethods ref="KeyMethods" :getquery="query"></KeyMethods></el-tab-pane>
+        <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
+        <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
+        <el-tab-pane label="How to Use" name="UseClass"><UseClass ref="UseClass" :use="query"></UseClass></el-tab-pane>
+        <el-tab-pane label="Others" name="RelatedTerms"><RelatedTerms ref="RelatedTerms" :gq="query"></RelatedTerms></el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -203,7 +203,8 @@
         select: '1',
         kai:false,
         displayLabelMean: "Please select your question cateqory",
-        label: "Class Search"
+        label: "Class Search",
+        activeName: "Method"
       }
     },
     filters: {
@@ -219,6 +220,12 @@
 
     },
     methods: {
+      call_son_component_method (tab, event) {
+        console.log(this.activeName)
+        if (this.activeName != "Method") {
+          this.$refs[this.activeName].display_loading()
+        }
+      },
       example() {
         this.query = 'org.jabref.model.entry.BibEntry'
       },
