@@ -30,7 +30,7 @@
                 :data="tableData"
                 style="width: 100%">
           <el-table-column
-                  prop="full_html_description"
+                  prop="full_description"
                   label="Class Description"
                   header-align="center"
                   style="text-indent: 2em;"
@@ -142,8 +142,8 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="Field" name="Field"><Field ref="Field" :fquery="query"></Field></el-tab-pane>
-        <el-tab-pane label="Constructor" name="Constructor"><Constructor ref="Constructor" :getquery="query"></Constructor></el-tab-pane>
+        <el-tab-pane label="Fields" name="Field"><Field ref="Field" :fquery="query"></Field></el-tab-pane>
+        <el-tab-pane label="Constructors" name="Constructor"><Constructor ref="Constructor" :getquery="query"></Constructor></el-tab-pane>
         <el-tab-pane label="Key Methods" name="KeyMethods"><KeyMethods ref="KeyMethods" :getquery="query"></KeyMethods></el-tab-pane>
         <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
         <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
