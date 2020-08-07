@@ -23,7 +23,7 @@
             >
                 <el-table-column
                         prop="parameter"
-                        label="As parameter"
+                        label="As Parameter"
                         header-align="center"
                         align="center"
                 >

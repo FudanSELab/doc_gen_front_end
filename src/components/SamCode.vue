@@ -3,10 +3,10 @@
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
         </div>
-    <h1 @click="display_loading">Sample Code</h1>
+    <h2 @click="display_loading">Sample Code</h2>
     <br>
     <el-table
-            :data="samplecode"
+            :data="samplecode.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             border
             style="width:92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table-column
@@ -15,8 +15,20 @@
                 header-align="center"
                 align="center"
         >
+            <template slot-scope="scope">
+                <div v-html="scope.row.sc"></div>
+            </template>
         </el-table-column>
     </el-table>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[1, 2, 3, 4, 5]"
+            :page-size="pagesize"
+            :total="samplecode.length"
+            layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
     </div>
 </template>
 
@@ -32,6 +44,8 @@
         data() {
             return {
                 samplecode: [],
+                pagesize:1,
+                currentPage:1,
 
             }
         },
@@ -58,16 +72,30 @@
                     this.samplecode.push({
                         sc: responseData['sample_code'][i],
 
-
                     })
 
                 }
 
+            },
+            changeHash (idName) {
+                document.querySelector(idName).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                })
+            },
+            handleSizeChange: function(val) {
+                this.pagesize = val;
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
             },
         }
     }
 </script>
 
 <style scoped>
+    .el-table .cell {
+        　　white-space: pre-line;
+    }
 
 </style>
