@@ -121,7 +121,7 @@
                           label="Type"
                           header-align="center"
                           align="center"
-                          width="160">
+                          width="180">
                   </el-table-column>
                   <el-table-column
                           prop="name"
@@ -133,7 +133,7 @@
                   <el-table-column
                           header-align="center"
                           align="center"
-                          prop="qualified_name"
+                          prop="description"
                           label="Description">
                   </el-table-column>
                 </el-table>
@@ -315,12 +315,12 @@
             returntype: simple_return_type,
             retype:full_return_type,
             return_value: [{
-              qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
+              description: responseData['methods'][i]['return_value'][1]['properties']['description'],
               type: simple_type,
               name:'-',
               la: 'return value'
             }],
-            parameters: []
+            // parameters: []
           }
           for (let j in responseData['methods'][i]['parameters']) {
             // 对Method Detail中Type这一栏的parameter进行处理
@@ -332,12 +332,27 @@
             if (simple_type.indexOf(" ")!=-1) {
               simple_type = full_type.substring(0, simple_type.indexOf(" "))
             }
-
             singleMethod['return_value'].push({
-              qualified_name: responseData['methods'][i]['parameters'][j][1]['properties']['description'],
+              description: responseData['methods'][i]['parameters'][j][1]['properties']['description'],
               type: simple_type,
               name:responseData['methods'][i]['parameters'][j][1]['properties']['simple_name'],
               la: 'parameters'
+            })
+          }
+          for (let j in responseData['methods'][i]['exception_info']) {
+            // let full_type = responseData['methods'][i]['exception_info'][j]['exception_name']
+            // let simple_type = full_type
+            // if (full_type.lastIndexOf('.') != -1) {
+            //   simple_type = full_type.substring(simple_type.lastIndexOf('.')+1)
+            // }
+            // if (simple_type.indexOf(" ")!=-1) {
+            //   simple_type = full_type.substring(0, simple_type.indexOf(" "))
+            // }
+            singleMethod['return_value'].push({
+              description : responseData['methods'][i]['exception_info'][j]['description'],
+              type:responseData['methods'][i]['exception_info'][j]['exception_name'],
+              name:'-',
+              la: 'throw exception'
             })
           }
           this.methods_info.push(singleMethod)

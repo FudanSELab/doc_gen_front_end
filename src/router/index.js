@@ -6,6 +6,7 @@ import SampleCode from '../components/SampleCode'
 import Others from '../components/Others'
 import ElementGraph from '../components/showElementsGraph'
 import APIInfo from '../components/APIInfo'
+import Info from '../components/Info'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/APIInfo',
       name: 'APIInfo',
       component: APIInfo
+    },
+    {
+      path: '/Info',
+      name: 'Info',
+      component: Info
     },
     {
       path: '/ElementGraph/:id',
