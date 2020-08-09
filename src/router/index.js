@@ -37,6 +37,7 @@ export default new Router({
       name: 'Info',
       component: Info
     },
+
     {
       path: '/ElementGraph/:id',
       name: 'ElementGraph',

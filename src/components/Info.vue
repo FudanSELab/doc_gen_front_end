@@ -10,7 +10,7 @@
                         :data="tableData"
                         style="width: 100%">
                     <el-table-column
-                            prop="full_html_description"
+                            prop="full_description"
                             label="Class Description"
                             header-align="center"
                             style="text-indent: 2em;"
@@ -67,7 +67,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-tabs  id="methods" v-show="kai" style="padding: 0px 0px 0px;width: 92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card">
+            <el-tabs  id="methods" v-model="activeName" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card"  @tab-click="call_son_component_method">
                 <el-tab-pane>
                     <span slot="label">Methods</span>
                     <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
@@ -87,7 +87,7 @@
                                     width="360"
                             >
                                 <template slot-scope="scope">
-                                    <router-link  style="color: #2c3e50;text-decoration:none" :to="{name:'Info',params:{msg:scope.row.retype}}">{{scope.row.returntype}}
+                                    <router-link tag="a" style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msg:scope.row.retype}}">{{scope.row.returntype}}
                                     </router-link>
                                 </template>
                             </el-table-column>
@@ -148,11 +148,13 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="Key Methods"><KeyMethods :getquery="query"></KeyMethods></el-tab-pane>
-                <el-tab-pane label="Sample Code"><SamCode :gqu="query"></SamCode></el-tab-pane>
-                <el-tab-pane label="Category"><Characteristic :gquery="query"></Characteristic></el-tab-pane>
-                <el-tab-pane label="How to Use"><UseClass :use="query"></UseClass></el-tab-pane>
-                <el-tab-pane label="Others"><RelatedTerms :gq="query"></RelatedTerms></el-tab-pane>
+                <el-tab-pane label="Fields" name="Field"><Field ref="Field" :fquery="query"></Field></el-tab-pane>
+                <el-tab-pane label="Constructors" name="Constructor"><Constructor ref="Constructor" :getquery="query"></Constructor></el-tab-pane>
+                <el-tab-pane label="Key Methods" name="KeyMethods"><KeyMethods ref="KeyMethods" :getquery="query"></KeyMethods></el-tab-pane>
+                <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
+                <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
+                <el-tab-pane label="How to Use" name="UseClass"><UseClass ref="UseClass" :use="query"></UseClass></el-tab-pane>
+                <el-tab-pane label="Others" name="RelatedTerms"><RelatedTerms ref="RelatedTerms" :gq="query"></RelatedTerms></el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -167,10 +169,12 @@
     import SamCode from "./SamCode";
     import Others from "./Others";
     import UseClass from "./UseClass";
+    import Constructor from "./Constructor";
+    import Field from "./Field";
 
     export default {
-        name: 'APIInfo',
-        components: {UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
+        name: 'Info',
+        components: { Constructor,Field, UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
         data () {
             return {
                 query: '',
@@ -181,44 +185,56 @@
                 tableData: [],
                 select: '1',
                 kai:false,
-                label: "Class Search"
+                label: "Class Search",
+                // activeName: "Method"
             }
         },
         mounted () {
-            this.query += this.$route.params.Msg
-            this.display_loading()
-            console.log(this.$route.params.Msg)
+             this.query += this.$route.params.msgKey
+             this.display_loading()
+             console.log(this.$route.params.msgKey)
+
         },
         methods: {
+            call_son_component_method (tab, event) {
+                console.log(this.activeName)
+                if (this.activeName != "Method") {
+                    this.$refs[this.activeName].display_loading()
+                }
+            },
             display_loading() {
-                    this.isLoading = true
-                    this.kai = true
+                // if (this.query.trim() === '') {
+                //     alert('Qualified name can not be null')
+                // } else {
+                this.isLoading = true
+                this.kai = true
+                axios
+                    .post(
+                        'http://106.14.239.166/contest/api/api_structure/',
+                        {qualified_name: this.query.trim()})
+                    .then(response => {
+                        this.dealt_response_data(response.data)
+                        this.isLoading = false
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        alert("Sorry! We can't find related responses.")
+                    }),
                     axios
                         .post(
-                            'http://106.14.239.166/contest/api/api_structure/',
-                            {qualified_name: this.query})
+                            'http://106.14.239.166/contest/api/get_doc/',
+                            {qualified_name: this.query.trim()})
                         .then(response => {
-                            this.dealt_response_data(response.data)
+                            this.info_response_data(response.data)
                             this.isLoading = false
+                            console.log(response.data);
                         })
                         .catch(error => {
+                            this.info_data(response.data)
                             console.log(error)
-                            alert("Sorry! We can't find related responses.")
-                        }),
-                        axios
-                            .post(
-                                'http://106.14.239.166/contest/api/get_doc/',
-                                {qualified_name: this.query})
-                            .then(response => {
-                                this.info_response_data(response.data)
-                                this.isLoading = false
-                                console.log(response.data);
-                            })
-                            .catch(error => {
-                                console.log(error)
-                                alert("Sorry! ")
-                            })
-
+                            alert("Sorry! ")
+                        })
+                // }
             },
             info_response_data (responseData) {
                 this.tableData= []
@@ -293,6 +309,7 @@
                         name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
                         mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
                         returntype: simple_return_type,
+                        retype: full_return_type,
                         return_value: [{
                             qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
                             type: simple_type,

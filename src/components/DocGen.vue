@@ -234,7 +234,6 @@
                             console.log(response.data);
                           })
                           .catch(error => {
-                            this.info_data(response.data)
                             console.log(error)
                             alert("Sorry! ")
                           })

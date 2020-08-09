@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-show="methods_info.length > 0"  style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
+        <div   style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
             <h2>Constructor Methods</h2>
             <el-table
                     :data="methods_info"
@@ -15,7 +15,7 @@
                         width="360"
                 >
                     <template slot-scope="scope">
-                        <router-link style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
+                        <router-link tag="a" target="_parent"  style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msg:scope.row.retype}}">{{scope.row.returntype}}
                         </router-link>
                     </template>
                 </el-table-column>

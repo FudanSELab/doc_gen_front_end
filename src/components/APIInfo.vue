@@ -87,7 +87,7 @@
                                     width="360"
                             >
                                 <template slot-scope="scope">
-                                    <router-link style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
+                                    <router-link tag="a" style="color: #2c3e50;text-decoration:none" :to="{name:'Info',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
                                     </router-link>
                                 </template>
                             </el-table-column>
@@ -177,7 +177,7 @@
         components: { Constructor,Field, UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
         data () {
             return {
-                query: '',
+                query: null,
                 isLoading: false,
                 extend_and_implements_info: [],
                 fields_info: [],
@@ -185,13 +185,20 @@
                 tableData: [],
                 select: '1',
                 kai:false,
-                label: "Class Search"
+                label: "Class Search",
+                // activeName: "Method"
             }
         },
         mounted () {
-            this.query += this.$route.params.msgKey
+            if(this.$route.params.msg==null){
+                this.query = this.$route.params.msgKey
+            }else{
+                this.query = this.$route.params.msg
+            }
+
+
             this.display_loading()
-            console.log(this.$route.params.msgKey)
+            console.log(this.query)
         },
         methods: {
             call_son_component_method (tab, event) {
@@ -307,6 +314,7 @@
                         name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
                         mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
                         returntype: simple_return_type,
+                        retype: full_return_type,
                         return_value: [{
                             qualified_name: responseData['methods'][i]['return_value'][1]['properties']['description'],
                             type: simple_type,
