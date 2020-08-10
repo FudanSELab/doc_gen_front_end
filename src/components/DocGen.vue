@@ -34,8 +34,14 @@
                   label="Class Description"
                   header-align="center"
                   style="text-indent: 2em;"
+          >
+          <template slot="header" slot-scope="scope">
 
-                  >
+            <div style="text-align: center">Class Description</div>
+            <el-tooltip v-for="(item, index) in class_label" style="float: right;width: 100px; padding: 8px 10px;" effect="dark" content="Class Label"  placement="top-end">
+            <el-button>{{item}}</el-button>
+          </el-tooltip>
+          </template>
           </el-table-column>
         </el-table>
 
@@ -101,7 +107,12 @@
             <h2 style="margin: 10px auto;align:left; word-break: break-word;width: 91%;margin-top: 40px;">Method Detail</h2>
             <div style="margin: 0px auto;" v-for="(item, index) in methods_info" v-bind:key="index" v-show="item['return_value'].length > 0">
               <div style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;">
-                <p class="1" v-html="item['mname']" align="left" style="font-size:15px;margin-left: 45px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
+                <div style="width: 93%;margin: 0px auto;"><el-tooltip class="item" style=" float: right;width: 140px; padding: 8px 10px;" effect="dark" content="Method Label" placement="right-start">
+                  <el-button>{{item['label']}}</el-button>
+                </el-tooltip>
+                <p class="1" v-html="item['mname']" align="left" style="font-size:15px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
+
+              </div>
               <div style="margin: 0px auto;padding: 3px;margin-bottom: 30px" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
@@ -174,6 +185,7 @@
         query: '',
         isLoading: false,
         extend_and_implements_info: [],
+        class_label:[],
         fields_info: [],
         methods_info: [],
         tableData: [],
@@ -181,7 +193,8 @@
         kai:false,
         displayLabelMean: "Please select your question cateqory",
         label: "Class Search",
-        activeName: "Method"
+        activeName: "Method",
+        show:false,
       }
     },
     filters: {
@@ -212,6 +225,7 @@
         } else {
           this.isLoading = true
           this.kai = true
+          this.show=true
           axios
                   .post(
                           'http://106.14.239.166/contest/api/api_structure/',
@@ -250,7 +264,9 @@
       dealt_response_data(responseData) {
         this.extend_and_implements_info = []
         this.fields_info = []
+        this.class_label=[]
         this.methods_info = []
+        this.class_label.push(responseData['label']),
         this.extend_and_implements_info.push(responseData['extends'])
         for (let i in responseData['fields']) {
           let qname = responseData['fields'][i][1]['properties']['qualified_name']
@@ -311,6 +327,7 @@
           let singleMethod = {
             name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            label:responseData['methods'][i]['label'],
             returntype: simple_return_type,
             retype:full_return_type,
             return_value: [{
