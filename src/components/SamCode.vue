@@ -8,12 +8,12 @@
     <el-table
             :data="samplecode.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             border
-            style="width:92%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+            style="width:90%; margin: 10px auto 30px; box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); border-radius: 10px;">
         <el-table-column
                 prop="sc"
                 label="Example"
                 header-align="center"
-                align="center"
+                align="left"
         >
             <template slot-scope="scope">
                 <div v-html="scope.row.sc"></div>
@@ -69,8 +69,9 @@
             dealt_response_data(responseData) {
                 this.samplecode = [];
                 for (let i in responseData['sample_code']) {
+                    let code = "<pre style='padding-left: 50%'>" + responseData['sample_code'][i] + "</pre>";
                     this.samplecode.push({
-                        sc: responseData['sample_code'][i],
+                        sc: code,
 
                     })
 
