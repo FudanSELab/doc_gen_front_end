@@ -13,6 +13,33 @@
                     header-align="center"
                     align="center"
             >
+                <template slot-scope="scope">
+                    {{scope.row.keym}}
+                    <div v-show="scope.row.sample_code.length>0">
+                    <el-collapse accordion :center="true" style="width:93%;margin: 0px auto;">
+                        <el-collapse-item title="Sample Code">
+                            <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{scope.row.sample_code}}</pre></div>
+                        </el-collapse-item>
+                    </el-collapse>
+                    </div>
+<!--                    <el-button type="text" @click="dialogVisible = true">打开嵌套表格的 Dialog</el-button>-->
+<!--                    <el-dialog modal="false" destroy-on-close="true" title="收货地址" :visible.sync="dialogVisible">-->
+<!--                        {{scope.row.keym}}-->
+<!--                    </el-dialog>-->
+
+                    <!--                    <el-button type="text" style="float: right" @click="dialogVisible = true">Sample Code</el-button>-->
+<!--                    <el-dialog-->
+<!--                            title="Sample Code"-->
+<!--                            :visible.sync="dialogVisible"-->
+<!--                            width="90%"-->
+<!--                            :before-close="handleClose">-->
+<!--                       <span> <pre>{{KeyM['sample_code']}}</pre></span>-->
+<!--                        <span slot="footer" class="dialog-footer">-->
+<!--    <el-button @click="dialogVisible = false">取 消</el-button>-->
+<!--    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
+<!--            </span>-->
+<!--                    </el-dialog>-->
+                </template>
             </el-table-column>
         </el-table>
     </div>
@@ -30,11 +57,20 @@
         data() {
             return {
                 KeyM: [],
-
+                method:[],
+                dialogVisible: false
             }
         },
 
         methods: {
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+
+                        done();
+                    })
+                    .catch(_ => {});
+            },
             display_loading (){
                 axios
                     .post(
@@ -54,11 +90,11 @@
             },
             dealt_response_data (responseData) {
                 this.KeyM = [];
-                for (let i in responseData['key_methods']) {
+                this.method=[];
+                for (let i in responseData) {
                     this.KeyM.push({
-                        keym: responseData['key_methods'][i],
-
-
+                        keym:responseData[i]['qualified_name'],
+                        sample_code:responseData[i]['sample_code']
                     })
 
                 }

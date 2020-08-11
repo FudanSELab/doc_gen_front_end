@@ -69,14 +69,11 @@
             dealt_response_data(responseData) {
                 this.samplecode = [];
                 for (let i in responseData['sample_code']) {
-                    let code = "<pre style='padding-left: 50%'>" + responseData['sample_code'][i] + "</pre>";
+                    let code = "<pre style='padding-left: 40%'>" + responseData['sample_code'][i] + "</pre>";
                     this.samplecode.push({
                         sc: code,
-
                     })
-
                 }
-
             },
             changeHash (idName) {
                 document.querySelector(idName).scrollIntoView({

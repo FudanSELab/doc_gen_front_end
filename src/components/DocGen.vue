@@ -44,7 +44,19 @@
           </template>
           </el-table-column>
         </el-table>
+<!--        <el-table-->
+<!--                border-->
+<!--                :data="methods_info"-->
+<!--                style="width: 100%;">-->
+<!--          <el-table-column-->
+<!--                  prop="sample_code"-->
+<!--                  label="Relation"-->
+<!--                  header-align="center"-->
+<!--                  align="center"-->
+<!--                  >-->
+<!--          </el-table-column>-->
 
+<!--        </el-table>-->
       </div>
       <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
@@ -148,6 +160,11 @@
                           label="Description">
                   </el-table-column>
                 </el-table>
+                <el-collapse accordion style="width:93%;margin: 0px auto;">
+                  <el-collapse-item title="Sample Code">
+                    <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{item['sample_code']}}</pre></div>
+                  </el-collapse-item>
+                </el-collapse>
               </div>
             </div>
             </div>
@@ -284,6 +301,12 @@
           })
         }
         for (let i in responseData['methods']) {
+          // this.methods_info.push({
+          //   sample_code: responseData['methods'][i]['sample_code'],
+          // })
+          // this.methods_info.push({
+          //   sample_code: responseData['method'][i]['declare']
+          // })
           // 对All Methods这一栏的Return Type进行截取只留最后一部分
           let full_return_type = responseData['methods'][i]['return_value'][1]['properties']['type']
           let simple_return_type = full_return_type
@@ -328,6 +351,7 @@
             name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             label:responseData['methods'][i]['label'],
+            sample_code: responseData['methods'][i]['sample_code'],
             returntype: simple_return_type,
             retype:full_return_type,
             return_value: [{
