@@ -47,13 +47,24 @@
 <!--    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
 <!--            </span>-->
 <!--                        </el-dialog>-->
-                        <div v-show="scope.row.sample_code.length>0">
-                        <el-collapse accordion :center="true" style="width:93%;margin: 0px auto;">
-                            <el-collapse-item title="Sample Code">
-                                <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{scope.row.sample_code}}</pre></div>
-                            </el-collapse-item>
-                        </el-collapse>
-                        </div>
+<!--                        <div v-show="scope.row.sample_code.length>0">-->
+<!--                        <el-collapse accordion :center="true" style="width:93%;margin: 0px auto;">-->
+<!--                            <el-collapse-item title="Sample Code">-->
+<!--                                <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{scope.row.sample_code}}</pre></div>-->
+<!--                            </el-collapse-item>-->
+<!--                        </el-collapse>-->
+<!--                        </div>-->
+                        <template>
+                            <el-popover
+                                    placement="top-start"
+                                    title="Sample Code "
+                                    width="100%"
+                                    trigger="hover"
+                            >
+                                <pre>{{scope.row.sample_code}}</pre>
+                                <el-button type="text" style="float: right" slot="reference">Sample Code</el-button>
+                            </el-popover>
+                        </template>
                     </template>
 
                 </el-table-column>
@@ -96,12 +107,26 @@
 <!--    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
 <!--  </span>-->
 <!--                        </el-dialog>-->
-                        <div v-show="scope.row.sample_code.length>0">
-                        <el-collapse accordion :center="true" style="width:93%;margin: 0px auto;">
-                            <el-collapse-item title="Sample Code">
-                                <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{scope.row.sample_code}}</pre></div>
-                            </el-collapse-item>
-                        </el-collapse></div>
+
+
+<!--                        <div v-show="scope.row.sample_code.length>0">-->
+<!--                        <el-collapse accordion :center="true" style="width:100%;margin: 0px auto;">-->
+<!--                            <el-collapse-item title="Sample Code">-->
+<!--                                <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{scope.row.sample_code}}</pre></div>-->
+<!--                            </el-collapse-item>-->
+<!--                        </el-collapse></div>-->
+                        <template >
+                            <el-popover
+                                    placement="top-start"
+                                    title="Sample Code "
+                                    style="overflow: auto;"
+                                    width="90%"
+                                    trigger="hover"
+                            >
+                                <pre>{{scope.row.sample_code}}</pre>
+                                <el-button type="text" style="float: right" slot="reference">Sample Code</el-button>
+                            </el-popover>
+                        </template>
                     </template>
                 </el-table-column>
             </el-table>
