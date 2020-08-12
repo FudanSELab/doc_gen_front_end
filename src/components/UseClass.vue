@@ -119,11 +119,10 @@
                             <el-popover
                                     placement="top-start"
                                     title="Sample Code "
-                                    style="overflow: auto;"
-                                    width="90%"
+                                    style="margin: 0px auto;"
                                     trigger="hover"
                             >
-                                <pre>{{scope.row.sample_code}}</pre>
+                                <div style="width:1200px;overflow-x:scroll;"><pre>{{scope.row.sample_code}}</pre></div>
                                 <el-button type="text" style="float: right" slot="reference">Sample Code</el-button>
                             </el-popover>
                         </template>

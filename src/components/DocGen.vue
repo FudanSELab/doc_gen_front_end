@@ -38,7 +38,7 @@
           <template slot="header" slot-scope="scope">
 
             <div style="text-align: center">Class Description</div>
-            <el-tooltip v-for="(item, index) in class_label" style="float: right;width: 100px; padding: 8px 10px;" effect="dark" content="Class Label"  placement="top-end">
+            <el-tooltip v-for="(item, index) in class_label" :key="index" style="float: right;width: 100px; padding: 8px 10px;" effect="dark" content="Class Label"  placement="top-end">
             <el-button>{{item}}</el-button>
           </el-tooltip>
           </template>
@@ -160,9 +160,10 @@
                           label="Description">
                   </el-table-column>
                 </el-table>
+
                 <el-collapse accordion style="width:93%;margin: 0px auto;">
                   <el-collapse-item title="Sample Code">
-                    <div><pre style="font-family: ‘Courier New’, Courier, monospace;">{{item['sample_code']}}</pre></div>
+                    <div style="overflow-x:scroll;text-align: left"><pre style="font-family: ‘Courier New’, Courier, monospace;">{{item['sample_code']}}</pre></div>
                   </el-collapse-item>
                 </el-collapse>
               </div>
