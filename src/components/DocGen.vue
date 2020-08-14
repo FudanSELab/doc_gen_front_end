@@ -28,7 +28,7 @@
       <div v-show="tableData.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
                 :data="tableData"
-                style="width: 100%">
+                style="width: 96%;margin: auto">
           <el-table-column
                   prop="full_description"
                   label="Class Description"
@@ -57,6 +57,30 @@
 <!--          </el-table-column>-->
 
 <!--        </el-table>-->
+          <el-table
+                  :data="class_info"
+                  style="margin: 26px auto;width: 96%">
+              <el-table-column
+                      prop="functionality"
+                      label="Functionality"
+                      header-align="center"
+                      align="center"
+                      style="text-indent: 2em;"
+              >
+              </el-table-column>
+          </el-table>
+          <el-table
+                  :data="class_info"
+                  style="margin: 26px auto; width: 96%">
+              <el-table-column
+                      prop="directive"
+                      label="Directive"
+                      header-align="center"
+                      align="center"
+                      style="text-indent: 2em;"
+              >
+              </el-table-column>
+          </el-table>
       </div>
       <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
@@ -122,8 +146,11 @@
                 <div style="width: 93%;margin: 0px auto;"><el-tooltip class="item" style=" float: right;width: 140px; padding: 8px 10px;" effect="dark" content="Method Label" placement="right-start">
                   <el-button>{{item['label']}}</el-button>
                 </el-tooltip>
-                <p class="1" v-html="item['mname']" align="left" style="font-size:15px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
-
+                <p class="1" v-html="item['mname']" align="left" style="font-size:16px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
+                <div v-show="item['functionality'].length>0">
+                    <p style="font-size:15px;text-align:left;margin-top: 20px;margin-bottom: 2px"><b>functionality:</b>{{item['functionality']}}<br/>
+                <b>directive:</b>{{item['directive']}}</p>
+                </div>
               </div>
               <div style="margin: 0px auto;padding: 3px;margin-bottom: 30px" v-show="item['return_value'].length > 0">
                 <el-table
@@ -206,6 +233,7 @@
         class_label:[],
         fields_info: [],
         methods_info: [],
+        class_info:[],
         tableData: [],
         select: '1',
         kai:false,
@@ -284,8 +312,15 @@
         this.fields_info = []
         this.class_label=[]
         this.methods_info = []
+        this.class_directive=[]
+        this.class_info=[]
+        this.class_info.push({
+            functionality:responseData['functionality'],
+            directive:responseData['directive'],
+        })
         this.class_label.push(responseData['label']),
         this.extend_and_implements_info.push(responseData['extends'])
+
         for (let i in responseData['fields']) {
           let qname = responseData['fields'][i][1]['properties']['qualified_name']
           qname = qname.substring(qname.lastIndexOf('.')+1)
@@ -352,6 +387,8 @@
             name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             label:responseData['methods'][i]['label'],
+            directive:responseData['methods'][i]['directive'],
+            functionality:responseData['methods'][i]['functionality'],
             sample_code: responseData['methods'][i]['sample_code'],
             returntype: simple_return_type,
             retype:full_return_type,
