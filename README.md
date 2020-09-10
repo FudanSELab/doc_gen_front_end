@@ -1,8 +1,6 @@
-# Document Generator
+# doc_gen
 
-[![DOI](https://zenodo.org/badge/281585398.svg)](https://zenodo.org/badge/latestdoi/281585398)
-
-This is a document generator frontend which built by vue and element. The goal is to display a documentation for a Java class which built by document generator automatically.
+> 4 competition
 
 ## Build Setup
 
