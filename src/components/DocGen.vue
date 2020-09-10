@@ -147,7 +147,7 @@
                   <el-button>{{item['label']}}</el-button>
                 </el-tooltip>
                 <p class="1" v-html="item['mname']" align="left" style="font-size:16px;margin-bottom: 5px;width: 93%;">{{item['mname']}}</p>
-                <div v-show="item['functionality'].length>0">
+                <div v-show="item['functionality']!='null'||item['directive']!='null'">
                     <p style="font-size:15px;text-align:left;margin-top: 20px;margin-bottom: 2px"><b>functionality:</b>{{item['functionality']}}<br/>
                 <b>directive:</b>{{item['directive']}}</p>
                 </div>
@@ -383,12 +383,25 @@
           if (simple_type.indexOf(" ")!=-1) {
             simple_type = simple_type.substring(0, simple_type.indexOf(" "))
           }
+          let directive1;
+          if(responseData['methods'][i]['directive'].length>0){
+
+            directive1=responseData['methods'][i]['directive']
+          }else{
+            directive1='null'
+          }
+          let functionality1;
+          if(responseData['methods'][i]['functionality'].length>0){
+            functionality1=responseData['methods'][i]['functionality']
+          }else{
+            functionality1='null'
+          }
           let singleMethod = {
             name: '<b>'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             mname:'<b>'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
             label:responseData['methods'][i]['label'],
-            directive:responseData['methods'][i]['directive'],
-            functionality:responseData['methods'][i]['functionality'],
+            directive:directive1,
+            functionality:functionality1,
             sample_code: responseData['methods'][i]['sample_code'],
             returntype: simple_return_type,
             retype:full_return_type,
