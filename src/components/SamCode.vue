@@ -27,7 +27,7 @@
             :page-sizes="[1, 2, 3, 4, 5]"
             :page-size="pagesize"
             :total="samplecode.length"
-            layout="total, sizes, prev, pager, next, jumper">
+            layout="prev, pager, next">
     </el-pagination>
     </div>
 </template>
@@ -46,7 +46,7 @@
                 samplecode: [],
                 pagesize:1,
                 currentPage:1,
-
+                relate_api: []
             }
         },
         methods: {

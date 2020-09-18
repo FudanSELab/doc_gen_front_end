@@ -14,18 +14,21 @@
                     align="center"
             >
                 <template slot-scope="scope">
-                    {{scope.row.keym}}
-                    <template  v-show="scope.row.sample_code.length>0">
-                        <el-popover
-                                placement="top-start"
-                                title="Sample Code "
-                                width="100%"
-                                trigger="hover"
-                                >
-                            <pre>{{scope.row.sample_code}}</pre>
-                            <el-button type="text" style="float: right" slot="reference">Sample Code </el-button>
-                        </el-popover>
-                    </template>
+                    <router-link target="_blank" style="color: #409EFF;text-decoration:none"  :to="{name:'SampleCode',query:{query:scope.row.keym}}">
+                        {{scope.row.keym}}
+                    </router-link>
+                        <template  v-show="scope.row.sample_code.length>0">
+                            <el-popover
+                                    placement="top-start"
+                                    title="Sample Code "
+                                    width="100%"
+                                    trigger="hover">
+                                <pre>{{scope.row.sample_code}}</pre>
+                                <el-button type="text" style="float: right;color: #2c3e50;" slot="reference">Sample Code </el-button>
+                            </el-popover>
+                        </template>
+
+
 <!--                    <div v-show="scope.row.sample_code.length>0">-->
 <!--                    <el-collapse accordion :center="true" style="width:93%;margin: 0px auto;">-->
 <!--                        <el-collapse-item >-->

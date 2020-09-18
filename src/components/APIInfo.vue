@@ -13,8 +13,7 @@
                             prop="full_description"
                             label="Class Description"
                             header-align="center"
-                            style="text-indent: 2em;"
-
+                            style=""
                     >
                     </el-table-column>
                 </el-table>
@@ -39,36 +38,57 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
+
+            <div id="relate_api" v-show="relate_api.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
                 <el-table
-                        :data="fields_info"
                         border
+                        :data="relate_api"
                         style="width: 100%;">
                     <el-table-column
-                            prop="type"
-                            label="Type"
-                            header-align="center"
-                            align="center"
-                            width="132">
-                    </el-table-column>
-                    <el-table-column
                             prop="qualified_name"
+                            label="Related Class"
                             header-align="center"
-                            align="center"
-                            label="Field Name"
-                            width="320">
-                    </el-table-column>
-                    <el-table-column
-                            prop="description"
-                            header-align="center"
-                            align="left"
-                            label="Description"
-                    >
+                            align="center">
+                        <template slot-scope="scope">
+                            <router-link target="_blank" style="color: #409EFF;text-decoration:none"  :to="{name:'APIInfo',params:{msgKey:scope.row.qualified_name}}">
+                                <div>{{scope.row.qualified_name}}</div>
+                            </router-link>
+                        </template>
                     </el-table-column>
                 </el-table>
             </div>
+
+<!--            <div id="fields" v-show="fields_info.length > 0" style="padding: 10px;width: 90%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">-->
+<!--                <el-table-->
+<!--                        :data="fields_info"-->
+<!--                        border-->
+<!--                        style="width: 100%;">-->
+<!--                    <el-table-column-->
+<!--                            prop="type"-->
+<!--                            label="Type"-->
+<!--                            header-align="center"-->
+<!--                            align="center"-->
+<!--                            width="132">-->
+<!--                    </el-table-column>-->
+<!--                    <el-table-column-->
+<!--                            prop="qualified_name"-->
+<!--                            header-align="center"-->
+<!--                            align="center"-->
+<!--                            label="Field Name"-->
+<!--                            width="320">-->
+<!--                    </el-table-column>-->
+<!--                    <el-table-column-->
+<!--                            prop="description"-->
+<!--                            header-align="center"-->
+<!--                            align="left"-->
+<!--                            label="Description"-->
+<!--                    >-->
+<!--                    </el-table-column>-->
+<!--                </el-table>-->
+<!--            </div>-->
+
             <el-tabs  id="methods" v-model="activeName" v-show="kai" style="padding: 0px 0px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;" type="border-card"  @tab-click="call_son_component_method">
-                <el-tab-pane>
+                <el-tab-pane name="Method">
                     <span slot="label">Methods</span>
                     <div v-show="methods_info.length == 0" style="padding: 20px 0px;width: 96%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 6px;"><h4>{{"sorry,we can't find the methods..."}}</h4>
                     </div>
@@ -87,7 +107,7 @@
                                     width="360"
                             >
                                 <template slot-scope="scope">
-                                    <router-link tag="a" style="color: #2c3e50;text-decoration:none" :to="{name:'Info',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
+                                    <router-link tag="a" target="_blank" style="color: #2c3e50;text-decoration:none" :to="{name:'Info',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
                                     </router-link>
                                 </template>
                             </el-table-column>
@@ -154,7 +174,7 @@
                 <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
                 <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
                 <el-tab-pane label="How to Use" name="UseClass"><UseClass ref="UseClass" :use="query"></UseClass></el-tab-pane>
-                <el-tab-pane label="Others" name="RelatedTerms"><RelatedTerms ref="RelatedTerms" :gq="query"></RelatedTerms></el-tab-pane>
+<!--                <el-tab-pane label="Others" name="RelatedTerms"><RelatedTerms ref="RelatedTerms" :gq="query"></RelatedTerms></el-tab-pane>-->
             </el-tabs>
         </div>
     </div>
@@ -177,7 +197,7 @@
         components: { Constructor,Field, UseClass, Others, SamCode, RelatedTerms, Characteristic,InterfaceInfo, KeyMethods},
         data () {
             return {
-                query: null,
+                query: "",
                 isLoading: false,
                 extend_and_implements_info: [],
                 fields_info: [],
@@ -186,19 +206,19 @@
                 select: '1',
                 kai:false,
                 label: "Class Search",
-                // activeName: "Method"
+                activeName: "Method",
+                relate_api: []
             }
         },
         mounted () {
+            console.log(this.$route.params.msgKey)
             if(this.$route.params.msg==null){
                 this.query = this.$route.params.msgKey
             }else{
                 this.query = this.$route.params.msg
             }
-
-
-            this.display_loading()
             console.log(this.query)
+            this.display_loading()
         },
         methods: {
             call_son_component_method (tab, event) {
@@ -208,46 +228,71 @@
                 }
             },
             display_loading() {
-                // if (this.query.trim() === '') {
-                //     alert('Qualified name can not be null')
-                // } else {
-                this.isLoading = true
-                this.kai = true
-                axios
-                    .post(
-                        'http://106.14.239.166/contest/api/api_structure/',
-                        {qualified_name: this.query.trim()})
-                    .then(response => {
-                        this.dealt_response_data(response.data)
-                        this.isLoading = false
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        alert("Sorry! We can't find related responses.")
-                    }),
+                if (this.query == undefined || this.query == null || this.query.trim() === '') {
+                    alert('Qualified name can not be null')
+                } else {
+                    this.isLoading = true
+                    this.kai = true
                     axios
                         .post(
-                            'http://106.14.239.166/contest/api/get_doc/',
+                            'http://106.14.239.166/contest/api/api_structure/',
                             {qualified_name: this.query.trim()})
                         .then(response => {
-                            this.info_response_data(response.data)
+                            this.dealt_response_data(response.data)
                             this.isLoading = false
-                            console.log(response.data);
                         })
                         .catch(error => {
-                            this.info_data(response.data)
+                            console.log(error)
+                            alert("Sorry! We can't find related responses.")
+                        }),
+                        axios
+                            .post(
+                                'http://106.14.239.166/contest/api/get_doc/',
+                                {qualified_name: this.query.trim()})
+                            .then(response => {
+                                this.info_response_data(response.data)
+                                this.isLoading = false
+                                console.log(response.data);
+                            })
+                            .catch(error => {
+                                this.info_data(response.data)
+                                console.log(error)
+                                alert("Sorry! ")
+                            })
+
+                    axios
+                        .post(
+                            'http://106.14.239.166/contest/api/related_api/',
+                            {qualified_name: this.query.trim()})
+                        .then(response => {
+                            this.isLoading = false
+                            console.log(response.data);
+                            this.relate_api = []
+                            for (let i = 0; i < response.data["related_api_simplified"].length; i++) {
+                                this.relate_api.push({
+                                    "qualified_name": response.data["related_api"][i],
+                                    "simple_name": response.data["related_api_simplified"][i]
+                                })
+                            }
+
+                            console.log(this.relate_api)
+                        })
+                        .catch(error => {
                             console.log(error)
                             alert("Sorry! ")
                         })
-                // }
+                }
             },
             info_response_data (responseData) {
                 this.tableData= []
-                this.tableData.push({
-                    full_html_description: responseData['full_html_description'],
-                    full_description: responseData['full_description'],
-                    sentence_description: responseData['sentence_description']
-                })
+                if (responseData['full_description'] != "") {
+                    this.tableData.push({
+                        full_html_description: responseData['full_html_description'],
+                        full_description: responseData['full_description'],
+                        sentence_description: responseData['sentence_description']
+                    })
+                }
+                console.log(this.tableData)
             },
             dealt_response_data(responseData) {
                 this.extend_and_implements_info = []

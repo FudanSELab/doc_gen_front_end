@@ -87,7 +87,7 @@
                                     width="360"
                             >
                                 <template slot-scope="scope">
-                                    <router-link tag="a" style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msg:scope.row.retype}}">{{scope.row.returntype}}
+                                    <router-link tag="a" target="_blank" style="color: #2c3e50;text-decoration:none" :to="{name:'APIInfo',params:{msgKey:scope.row.retype}}">{{scope.row.returntype}}
                                     </router-link>
                                 </template>
                             </el-table-column>

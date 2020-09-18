@@ -28,7 +28,7 @@ export default new Router({
       component: Others
     },
     {
-      path: '/APIInfo',
+      path: '/APIInfo/:msgKey',
       name: 'APIInfo',
       component: APIInfo
     },

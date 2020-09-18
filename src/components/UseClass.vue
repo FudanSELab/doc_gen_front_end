@@ -14,19 +14,18 @@
         </div>
         <div class="As_Return_value">
             <h2>{{use}}</h2>
-            <p align="left" style="text-indent: 2em;margin-left: 70px;font-size: 16px;width:810px;">{{introduction}}</p>
+            <p align="left" style="font-size: 16px;width:91%;margin: 0px auto;">{{introduction}}</p>
         <div style="margin-top: 37px" id="As_parameter" >
             <el-table
                     :data="as_parameter.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                     stripe
                     style="width: 93%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;"
-            >
+                    empty-text="loading...">
                 <el-table-column
                         prop="parameter"
                         label="As Parameter"
                         header-align="center"
-                        align="center"
-                >
+                        align="center">
                     <template slot-scope="scope">
                         {{scope.row.parameter}}
 <!--                        <el-collapse accordion style="width:80%;margin: 0px auto;">-->
@@ -76,7 +75,8 @@
                     :page-sizes="[10, 20, 30, 40, 50]"
                     :page-size="pagesize"
                     :total="as_parameter.length"
-                    layout="total, sizes, prev, pager, next, jumper">
+                    layout="slot, prev, pager, next">
+                <span>total num: {{as_return_value.length}}</span>
             </el-pagination>
         </div>
         <div class="As_return_value" id="As_Return_value">
@@ -85,6 +85,7 @@
                     stripe
                     style="width: 93%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;"
                     border
+                    empty-text="loading..."
             >
                 <el-table-column
                         prop="return_value"
@@ -136,7 +137,8 @@
                     :page-sizes="[10, 20, 30, 40, 50]"
                     :page-size="pagesize1"
                     :total="as_return_value.length"
-                    layout="total, sizes, prev, pager, next, jumper">
+                    layout="slot, prev, pager, next">
+                <span>total num: {{as_return_value.length}}</span>
             </el-pagination>
         </div>
 
