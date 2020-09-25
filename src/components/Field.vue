@@ -4,6 +4,7 @@
         <el-table
                 :data="fields_info"
                 border
+                empty-text="loading..."
                 style="margin-top:30px;width: 100%;">
             <el-table-column
                     prop="type"

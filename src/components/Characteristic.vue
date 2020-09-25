@@ -2,7 +2,7 @@
     <div>
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
-        </div><h1>Category</h1>
+        </div><h1>Characteristic/Concepts Classification</h1>
         <div>
         <el-table
                 :data="category"
@@ -45,13 +45,13 @@
                         align="center"
                 >
                 </el-table-column>
-                <el-table-column
-                        prop="relation1"
-                        label="relation"
-                        header-align="center"
-                        align="center"
-                >
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                        prop="relation1"-->
+<!--                        label="relation"-->
+<!--                        header-align="center"-->
+<!--                        align="center"-->
+<!--                >-->
+<!--                </el-table-column>-->
             </el-table>
         </div>
     </div>

@@ -3,11 +3,12 @@
         <div style="text-align:right">
             <el-button icon="el-icon-refresh-left" @click="display_loading"></el-button>
         </div>
-    <h2 @click="display_loading">Sample Code</h2>
+    <h2 @click="display_loading">usage example</h2>
     <br>
     <el-table
             :data="samplecode.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             border
+            empty-text="loading..."
             style="width:90%; margin: 10px auto 30px; box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); border-radius: 10px;">
         <el-table-column
                 prop="sc"

@@ -7,8 +7,8 @@
         <div class="forward container" style="max-width: 1200px;">
             <div class="side_bar">
                 <ul class="nav_sidebar">
-                    <li><a @click="changeHash('#As_parameter')">As Parameter</a></li>
-                    <li><a @click="changeHash('#As_Return_value')">As Return Value</a></li>
+                    <li><a @click="changeHash('#As_parameter')">Scenario: Using Class Instances</a></li>
+                    <li><a @click="changeHash('#As_Return_value')">Scenario : Obtain Class Instances</a></li>
                     </ul>
             </div>
         </div>
@@ -23,7 +23,7 @@
                     empty-text="loading...">
                 <el-table-column
                         prop="parameter"
-                        label="As Parameter"
+                        label="Scenario: Using Class Instances"
                         header-align="center"
                         align="center">
                     <template slot-scope="scope">
@@ -56,7 +56,7 @@
                         <template>
                             <el-popover
                                     placement="top-start"
-                                    title="Sample Code "
+                                    title="Sample Code"
                                     width="100%"
                                     trigger="hover"
                             >
@@ -89,7 +89,7 @@
             >
                 <el-table-column
                         prop="return_value"
-                        label="As Return Value"
+                        label="Scenario : Obtain Class Instances"
                         header-align="center"
                         align="center"
                 >
@@ -119,7 +119,7 @@
                         <template >
                             <el-popover
                                     placement="top-start"
-                                    title="Sample Code "
+                                    title="Usage Examples"
                                     style="margin: 0px auto;"
                                     trigger="hover"
                             >

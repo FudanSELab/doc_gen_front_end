@@ -5,6 +5,7 @@
             <el-table
                     :data="methods_info"
                     stripe
+                    empty-text="loading..."
                     style="width: 95%;margin: auto"
             >
                 <el-table-column

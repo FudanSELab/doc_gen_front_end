@@ -29,9 +29,9 @@
         <el-tooltip v-for="(item, index) in class_label" :key="index" style="float: right;width: 100px; padding: 8px 10px;" effect="dark" content="Class Label"  placement="top-end">
           <el-button>{{item}}</el-button>
         </el-tooltip>
-        <div v-show="class_info.length > 0 && class_info[0]['concepts'].length > 0" style="text-align: center;margin:0px auto;">
-          <h3 style="text-align: center;">Concept: {{class_info[0]['concepts_str']}}</h3>
-        </div>
+<!--        <div v-show="class_info.length > 0 && class_info[0]['concepts'].length > 0" style="text-align: center;margin:0px auto;">-->
+<!--          <h4 style="text-align: center;">Concept: {{class_info[0]['concepts_str']}}</h4>-->
+<!--        </div>-->
         <el-table
                 :data="tableData"
                 style="width: 96%;margin: auto">
@@ -89,6 +89,9 @@
               >
               </el-table-column>
           </el-table>
+        <div v-show="class_info.length > 0 && class_info[0]['concepts'].length > 0" style="text-align: center;margin:0px auto;">
+          <h4 style="text-align: center;"><b>relevant concepts: </b>{{class_info[0]['concepts_str']}}</h4>
+        </div>
       </div>
       <div id="extend_and_implements" v-show="extend_and_implements_info.length > 0" style="padding: 10px;width: 82%;margin: 10px auto 30px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);border-radius: 10px;">
         <el-table
@@ -118,7 +121,7 @@
                 style="width: 100%;">
           <el-table-column
                   prop="qualified_name"
-                  label="Related Class"
+                  label="Relevant Classes"
                   header-align="center"
                   align="center">
             <template slot-scope="scope">
@@ -183,20 +186,60 @@
                     <p class="1" v-html="item['simple_name']" align="left" style="font-size:16px;margin-bottom: 5px;width: 93%;color: #409EFF;">{{item['simple_name']}}</p>
                   </router-link>
 
-                <div v-show="item['functionality']!='null'||item['directive']!='null'">
-                    <p v-show="item['functionality']!='null'" style="text-align:left;margin-top: 20px;margin-bottom: 10px">
-                      <b>functionality:</b>{{item['functionality']}}
-                    </p>
-                  <p v-show="item['directive']!='null'" style="text-align:left;margin-top: 20px;margin-bottom: 10px">
-                    <b>directive:</b>{{item['directive']}}
-                  </p>
-                </div>
-                  <div v-show="item['concepts'].length > 0" style="text-align: left;">
-                    <p>
-                      <b>Concepts: </b>{{item['concepts_str']}}
+                  <div v-show="item['complete_comment']!=''">
+                    <p style="text-align:left;margin-bottom: 10px">
+                      {{item['complete_comment']}}
                     </p>
                   </div>
+
+                <div v-show="item['functionality']!='null'||item['directive']!='null'">
+
+                    <p v-show="item['functionality']!='null'" style="text-align:left;margin-top: 20px;margin-bottom: 10px">
+                      <b>functionality: </b>{{item['functionality']}}
+                    </p>
+                  <p v-show="item['directive']!='null'" style="text-align:left;margin-top: 20px;margin-bottom: 10px">
+                    <b>directive from comments: </b>{{item['directive']}}
+                  </p>
+
+<!--                  <p v-show="item['return_value_directive']!=''" style="text-align:left;margin-top: 20px;margin-bottom: 10px">-->
+<!--                    <b>Permitted situation:</b>{{item['return_value_directive']}}-->
+<!--                  </p>-->
+<!--                  <p v-show="item['throws_directive']!=''" style="text-align:left;margin-top: 20px;margin-bottom: 10px">-->
+<!--                    <b>Prohibited situation:</b>{{item['throws_directive']}}-->
+<!--                  </p>-->
+                </div>
+
+<!--                  这是显示概念的地方-->
+<!--                  <div v-show="item['concepts'].length > 0" style="text-align: left;">-->
+<!--                    <p>-->
+<!--                      <b>relevant concepts: </b>{{item['concepts_str']}}-->
+<!--                    </p>-->
+<!--                  </div>-->
               </div>
+
+                <div style="margin: 10px auto;padding: 3px;" v-show="item['all_directive'].length > 0">
+                  <el-table
+                          :data="item['all_directive']"
+                          stripe
+                          border
+                          max-height="300"
+                          style="width: 90%;margin: 0px auto;" >
+                    <el-table-column
+                            prop="source"
+                            label="Type"
+                            header-align="center"
+                            align="center"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            header-align="center"
+                            align="center"
+                            prop="directive"
+                            label="Directive from codes">
+                    </el-table-column>
+                  </el-table>
+                </div>
+
               <div style="margin: 10px auto;padding: 3px;" v-show="item['return_value'].length > 0">
                 <el-table
                         :data="item['return_value']"
@@ -246,9 +289,9 @@
         <el-tab-pane label="Fields" name="Field"><Field ref="Field" :fquery="query"></Field></el-tab-pane>
         <el-tab-pane label="Constructors" name="Constructor"><Constructor ref="Constructor" :getquery="query"></Constructor></el-tab-pane>
         <el-tab-pane label="Key Methods" name="KeyMethods"><KeyMethods ref="KeyMethods" :getquery="query"></KeyMethods></el-tab-pane>
-        <el-tab-pane label="Sample Code" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
-        <el-tab-pane label="Category" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
-        <el-tab-pane label="How to Use" name="UseClass"><UseClass ref="UseClass" :use="query"></UseClass></el-tab-pane>
+        <el-tab-pane label="Usage Examples" name="SamCode"><SamCode ref="SamCode" :gqu="query"></SamCode></el-tab-pane>
+        <el-tab-pane label="Characteristic/Concepts Classification" name="Characteristic"><Characteristic ref="Characteristic" :gquery="query"></Characteristic></el-tab-pane>
+        <el-tab-pane label="Usage Scenario" name="UseClass"><UseClass ref="UseClass" :use="query"></UseClass></el-tab-pane>
 <!--        <el-tab-pane label="Others" name="RelatedTerms"><RelatedTerms ref="RelatedTerms" :gq="query"></RelatedTerms></el-tab-pane>-->
       </el-tabs>
     </div>
@@ -312,7 +355,11 @@
         }
       },
       example() {
-        this.query = 'org.jabref.model.entry.BibEntry'
+        if (this.select == '1') {
+          this.query = 'org.jabref.model.entry.BibEntry'
+        } else {
+          this.query = 'org.jabref.model.entry.BibEntry.clearField(Field field)'
+        }
       },
       display_loading() {
         if (this.query.trim() === '') {
@@ -344,7 +391,7 @@
                   })
                   .catch(error => {
                     console.log(error)
-                    alert("Sorry! ")
+                    // alert("Sorry! ")
                   })
         }
 
@@ -367,7 +414,7 @@
                 })
                 .catch(error => {
                   console.log(error)
-                  alert("Sorry! ")
+                  // alert("Sorry! ")
                 })
 
       },
@@ -376,10 +423,26 @@
         if (responseData['full_description'] != "") {
           this.tableData.push({
             full_html_description: responseData['full_html_description'],
-            full_description: responseData['full_description'],
+            full_description: responseData['full_description'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
             sentence_description: responseData['sentence_description']
           })
         }
+      },
+      get_term(){
+        axios
+                .post(
+                        'http://106.14.239.166/contest/api/terminology/',
+                        {qualified_name:this.query.trim()})
+                .then(response => {
+                  for (let i in response.data) {
+                    this.class_info[0]['concepts'].push(response.data[i][0])
+                  }
+                  this.class_info[0]['concepts_str'] = this.class_info[0]['concepts'].join(", ")
+                })
+                .catch(error => {
+                  console.log(error)
+                  alert("Sorry! We can't find related responses.")
+                })
       },
       dealt_response_data(responseData) {
         this.extend_and_implements_info = []
@@ -387,13 +450,16 @@
         this.class_label=[]
         this.methods_info = []
         this.class_directive=[]
+
         this.class_info=[]
         this.class_info.push({
-            functionality:responseData['functionality'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
-            directive:responseData['directive'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            functionality:responseData['functionality'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
+            directive:responseData['directive'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
             concepts: responseData['concepts'],
             concepts_str: responseData['concepts'].join(", ")
         })
+        this.get_term()
+
         console.log(this.class_info)
         this.class_label.push(responseData['label']),
         this.extend_and_implements_info.push(responseData['extends'])
@@ -475,17 +541,21 @@
           }
           let singleMethod = {
             simple_name: '<b>'+final_method_name+'</b>',
-            name: '<b style="color: #409EFF;">'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
-            mname:'<b style="color: #409EFF;">'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            name: '<b style="color: #409EFF;">'+final_method_name+'</b>' + '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
+            mname:'<b style="color: #409EFF;">'+final_method_name+'</b>'+ '<br/>' + responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
             qualified_name: responseData['methods'][i]['name'],
             label:responseData['methods'][i]['label'],
-            directive:directive1.replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
-            functionality:functionality1.replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,''),
+            directive:directive1.replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
+            functionality:functionality1.replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
             sample_code: responseData['methods'][i]['sample_code'],
             returntype: simple_return_type,
             retype:full_return_type,
             concepts: responseData['methods'][i]['concepts'],
             concepts_str: responseData['methods'][i]['concepts'].join(", "),
+            return_value_directive: responseData['methods'][i]['return_value_directive'].join(". "),
+            throws_directive: responseData['methods'][i]['throws_directive'].join(". "),
+            all_directive: [],
+            complete_comment: responseData['methods'][i]['doc_info']['comment'].replace(/<s>/g, '').replace(/<NULL>/g,'').replace(/<\/s>/g,'').replace(/<noun>/g,'').replace(/<\/noun>/g,''),
             return_value: [{
               description: responseData['methods'][i]['return_value'][1]['properties']['description'],
               type: simple_type,
@@ -494,6 +564,20 @@
             }],
             // parameters: []
           }
+
+          for (let j in responseData['methods'][i]['return_value_directive']) {
+            singleMethod['all_directive'].push({
+              "source": "Permitted situation",
+              "directive": responseData['methods'][i]['return_value_directive'][j]
+            })
+          }
+          for (let j in responseData['methods'][i]['throws_directive']) {
+            singleMethod['all_directive'].push({
+              "source": "Prohibited situation",
+              "directive": responseData['methods'][i]['throws_directive'][j]
+            })
+          }
+
           for (let j in responseData['methods'][i]['parameters']) {
             // 对Method Detail中Type这一栏的parameter进行处理
             let full_type = responseData['methods'][i]['parameters'][j][1]['properties']['type']
@@ -543,6 +627,7 @@
         console.log(this.methods_info)
       },
       change_search() {
+        this.query = ""
         let select_2_label = {
           1: "Class Search",
           2: "Method Search",

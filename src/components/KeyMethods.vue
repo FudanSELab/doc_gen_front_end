@@ -6,6 +6,7 @@
         <el-table
                 :data="KeyM"
                 border
+                empty-text="loading..."
                 style="width: 92%;margin: 3px auto;">
             <el-table-column
                     prop="keym"
